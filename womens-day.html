@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Celebrate International Women's Day with a special greeting — Happy Women's Day!">
+<meta name="theme-color" content="#2a0a14">
+<meta property="og:title" content="Happy Women's Day 🌸">
+<meta property="og:description" content="Celebrate International Women's Day with a special greeting.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>" type="image/svg+xml">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>" type="image/svg+xml">
+<title>Happy Women's Day 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rose: #e8416a;
+    --gold: #f5a623;
+    --blush: #fde8ef;
+    --deep: #2a0a14;
+    --cream: #fff8f0;
+    --petal: #f9c8d8;
+  }
+
+  body {
+    min-height: 100vh;
+    background: var(--deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Kalam', cursive;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Animated petal background */
+  .petals-bg {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .petal {
+    position: absolute;
+    top: -60px;
+    font-size: 1.4rem;
+    animation: fallPetal linear infinite;
+    opacity: 0.6;
+  }
+
+  @keyframes fallPetal {
+    0%   { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0; }
+    10%  { opacity: 0.7; }
+    90%  { opacity: 0.5; }
+    100% { transform: translateY(110vh) rotate(720deg) translateX(40px); opacity: 0; }
+  }
+
+  /* Glow orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb1 { width: 400px; height: 400px; background: rgba(232,65,106,0.25); top: -100px; left: -100px; }
+  .orb2 { width: 300px; height: 300px; background: rgba(245,166,35,0.15); bottom: -80px; right: -80px; }
+  .orb3 { width: 250px; height: 250px; background: rgba(232,65,106,0.12); bottom: 20%; left: 10%; }
+
+  /* Card */
+  .card {
+    position: relative; z-index: 1;
+    max-width: 680px;
+    width: 95%;
+    background: linear-gradient(135deg, rgba(255,248,240,0.07) 0%, rgba(253,232,239,0.05) 100%);
+    border: 1px solid rgba(232,65,106,0.3);
+    border-radius: 24px;
+    padding: 50px 44px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 80px rgba(232,65,106,0.15), 0 20px 60px rgba(0,0,0,0.4);
+    animation: cardIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(40px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Decorative top line */
+  .top-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+    animation: fadeSlide 0.8s 0.3s both;
+  }
+  .top-line hr { flex: 1; border: none; border-top: 1px solid rgba(232,65,106,0.4); }
+  .top-line span { font-size: 1.4rem; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 36px;
+    animation: fadeSlide 0.8s 0.5s both;
+  }
+
+  .date-tag {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--rose), var(--gold));
+    color: white;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 5px 18px;
+    border-radius: 30px;
+    margin-bottom: 18px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+
+  h1 span {
+    background: linear-gradient(90deg, var(--rose), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 28px 0;
+    animation: fadeSlide 0.8s 0.7s both;
+  }
+  .divider hr { flex: 1; border: none; border-top: 1px solid rgba(255,255,255,0.08); }
+  .divider span { color: var(--rose); font-size: 1.1rem; }
+
+  /* Poem */
+  .poem {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+
+  .stanza {
+    animation: fadeSlide 0.8s both;
+  }
+  .stanza:nth-child(1) { animation-delay: 0.8s; }
+  .stanza:nth-child(2) { animation-delay: 1.0s; }
+  .stanza:nth-child(3) { animation-delay: 1.2s; }
+  .stanza:nth-child(4) { animation-delay: 1.4s; }
+  .stanza:nth-child(5) { animation-delay: 1.6s; }
+
+  .stanza p {
+    font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+    line-height: 1.85;
+    color: rgba(255,255,255,0.88);
+    font-weight: 400;
+  }
+
+  .stanza p em {
+    color: var(--gold);
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  .stanza p strong {
+    color: var(--petal);
+    font-weight: 700;
+  }
+
+  /* Highlight stanza */
+  .stanza.highlight {
+    background: linear-gradient(135deg, rgba(232,65,106,0.12), rgba(245,166,35,0.07));
+    border-left: 3px solid var(--rose);
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 36px;
+    animation: fadeSlide 0.8s 1.8s both;
+  }
+
+  .footer .emoji-row {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    letter-spacing: 6px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .footer p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: rgba(255,255,255,0.35);
+    font-size: 0.9rem;
+  }
+
+  .footer p span {
+    color: var(--rose);
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Shimmer line */
+  .shimmer-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--rose), var(--gold), transparent);
+    border-radius: 2px;
+    margin: 28px 0;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { opacity: 0.4; transform: scaleX(0.8); }
+    50% { opacity: 1; transform: scaleX(1); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Petal rain -->
+<div class="petals-bg" id="petals"></div>
+
+<!-- Glow orbs -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div class="card">
+
+  <div class="top-line">
+    <hr><span>🌸</span><hr>
+  </div>
+
+  <div class="header">
+    <div class="date-tag">8 March 2026</div>
+    <h1>Happy <span>Women's Day</span></h1>
+    <p class="subtitle">A Hinglish Poem — Dil Se</p>
+  </div>
+
+  <div class="shimmer-line"></div>
+
+  <div class="poem">
+
+    <div class="stanza">
+      <p>Tu <em>phool</em> hai, tu <em>aandhi</em> bhi hai,<br>
+      Tu <strong>nazuk</strong> hai, tu <strong>fauladi</strong> bhi hai.<br>
+      She blooms like a rose in every storm,<br>
+      Har mushkil mein rehti hai <em>warm</em>.</p>
+    </div>
+
+    <div class="stanza highlight">
+      <p>Ghar sambhaale, duniya bhi banaaye,<br>
+      <strong>Dreams</strong> ko apne kabhi na bhulaaye.<br>
+      She wears her scars like golden art,<br>
+      Toot ke bhi, jodti hai <em>har dil ka part</em>.</p>
+    </div>
+
+    <div class="stanza">
+      <p>Maa hai, beti hai, dost bhi hai,<br>
+      Har role mein <em>best</em> wo hoti hai.<br>
+      She carries the world on her gentle hands,<br>
+      Phir bhi apni <strong>udaan</strong> ko wo kehti — <em>"I can!"</em></p>
+    </div>
+
+    <div class="stanza highlight">
+      <p>Tujhe salaam hai, aye <em>naari</em>,<br>
+      Tu hai is duniya ki <strong>mehndaari</strong>.<br>
+      Not just today, but every single day,<br>
+      <em>Teri himmat</em> ko hum sab — <strong>salute karte hain aaj!</strong></p>
+    </div>
+
+    <div class="stanza">
+      <p>So rise, shine, aur khul ke jio,<br>
+      Apni <em>kahani</em> khud hi likhte jao.<br>
+      The world is yours — <strong>tu hai capable</strong>,<br>
+      <em>Happy Women's Day</em> — you are remarkable! 🌹</p>
+    </div>
+
+  </div>
+
+  <div class="shimmer-line"></div>
+
+  <div class="footer">
+    <div class="emoji-row">🌸💪✨🌹🎉</div>
+    <p>With love & respect — <span>Happy International Women's Day!</span></p>
+  </div>
+
+</div>
+
+<script>
+  // Generate falling petals
+  const emojis = ['🌸', '🌹', '✨', '🌺', '💮', '🌷'];
+  const container = document.getElementById('petals');
+  const count = 22;
+
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.fontSize = (0.9 + Math.random() * 1.2) + 'rem';
+    p.style.animationDuration = (6 + Math.random() * 10) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    p.style.opacity = 0.3 + Math.random() * 0.5;
+    container.appendChild(p);
+  }
+</script>
+</body>
+</html>
