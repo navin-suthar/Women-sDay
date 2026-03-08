@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌸 Naari Ka Samman — Version 2: Voice</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Baloo+2:wght@400;600;800&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --saffron: #ff9933;
+    --green: #138808;
+    --rose: #d63b6e;
+    --cream: #fff8ee;
+    --deep: #180a0a;
+    --gold: #f5c842;
+  }
+
+  body {
+    min-height: 100vh;
+    background: var(--deep);
+    background-image:
+      radial-gradient(ellipse at 70% 10%, rgba(255,153,51,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 10% 80%, rgba(214,59,110,0.12) 0%, transparent 50%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-start;
+    font-family: 'Kalam', cursive;
+    padding: 30px 16px 60px;
+  }
+
+  /* Saree-inspired top border */
+  .saree-border {
+    width: 100%; max-width: 700px;
+    height: 8px;
+    background: repeating-linear-gradient(90deg,
+      var(--saffron) 0px, var(--saffron) 20px,
+      white 20px, white 22px,
+      var(--green) 22px, var(--green) 42px,
+      white 42px, white 44px
+    );
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 0;
+  }
+
+  .main-card {
+    max-width: 700px; width: 100%;
+    background: linear-gradient(160deg, rgba(255,248,238,0.05), rgba(214,59,110,0.05));
+    border: 1px solid rgba(255,153,51,0.2);
+    border-top: none;
+    border-radius: 0 0 20px 20px;
+    padding: 36px 32px 40px;
+    backdrop-filter: blur(10px);
+  }
+
+  /* Speaker widget */
+  .speaker-widget {
+    display: flex; align-items: center; gap: 20px;
+    background: linear-gradient(135deg, rgba(255,153,51,0.12), rgba(214,59,110,0.1));
+    border: 1px solid rgba(255,153,51,0.3);
+    border-radius: 20px;
+    padding: 18px 24px;
+    margin-bottom: 32px;
+    animation: fadeIn 0.8s 0.2s both;
+  }
+
+  .avatar {
+    width: 62px; height: 62px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--saffron), var(--rose));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgba(255,153,51,0.3);
+    position: relative;
+  }
+
+  /* Sound wave rings */
+  .avatar::after {
+    content: '';
+    position: absolute; inset: -6px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,153,51,0.5);
+    animation: ringPulse 1.5s ease-out infinite;
+    display: none;
+  }
+  .avatar.speaking::after { display: block; }
+
+  @keyframes ringPulse {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+
+  .speaker-info { flex: 1; }
+  .speaker-name {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800; font-size: 1rem;
+    color: var(--gold);
+  }
+  .speaker-desc { color: rgba(255,255,255,0.45); font-size: 0.78rem; margin-top: 2px; }
+
+  /* Controls */
+  .controls { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+
+  .btn {
+    padding: 8px 18px; border-radius: 30px; border: none;
+    cursor: pointer; font-family: 'Kalam', cursive;
+    font-size: 0.85rem; font-weight: 700;
+    transition: all 0.2s;
+  }
+  .btn-play {
+    background: linear-gradient(135deg, var(--saffron), var(--rose));
+    color: white;
+    box-shadow: 0 4px 15px rgba(255,153,51,0.35);
+  }
+  .btn-play:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(255,153,51,0.5); }
+  .btn-stop {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .btn-stop:hover { background: rgba(255,255,255,0.13); }
+
+  /* Speed / pitch sliders */
+  .sliders { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; }
+  .slider-group { display: flex; flex-direction: column; gap: 4px; }
+  .slider-group label { font-size: 0.72rem; color: rgba(255,255,255,0.4); }
+  .slider-group input[type=range] {
+    width: 110px; accent-color: var(--saffron);
+    cursor: pointer;
+  }
+
+  /* Status bar */
+  #status {
+    font-size: 0.78rem; color: rgba(255,255,255,0.35);
+    margin-top: 8px; font-style: italic; min-height: 18px;
+    transition: color 0.3s;
+  }
+  #status.active { color: var(--saffron); }
+
+  /* Waveform animation */
+  .wave-bars {
+    display: flex; align-items: center; gap: 3px; height: 24px; margin-top: 6px;
+  }
+  .wbar {
+    width: 3px; background: var(--saffron); border-radius: 2px;
+    animation: waveDance 0.6s ease-in-out infinite alternate;
+    min-height: 3px;
+  }
+  .wbar:nth-child(1){height:6px;animation-delay:0s;}
+  .wbar:nth-child(2){height:14px;animation-delay:0.07s;}
+  .wbar:nth-child(3){height:20px;animation-delay:0.14s;}
+  .wbar:nth-child(4){height:10px;animation-delay:0.21s;}
+  .wbar:nth-child(5){height:18px;animation-delay:0.28s;}
+  .wbar:nth-child(6){height:8px;animation-delay:0.35s;}
+  .wbar:nth-child(7){height:16px;animation-delay:0.42s;}
+  .wbar:nth-child(8){height:12px;animation-delay:0.49s;}
+  .wbar:nth-child(9){height:20px;animation-delay:0.56s;}
+
+  .wave-bars.silent .wbar { animation-play-state: paused; height: 3px !important; }
+
+  @keyframes waveDance {
+    from { transform: scaleY(0.4); opacity: 0.5; }
+    to   { transform: scaleY(1); opacity: 1; }
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,153,51,0.3), transparent);
+    margin: 24px 0;
+  }
+
+  /* Title */
+  .title-block { text-align: center; margin-bottom: 28px; animation: fadeIn 0.8s 0.5s both; }
+  h1 {
+    font-family: 'Tiro Devanagari Hindi', serif;
+    font-size: clamp(1.7rem, 4.5vw, 2.6rem);
+    color: white; line-height: 1.3;
+  }
+  h1 .accent { color: var(--saffron); }
+  .sub { color: rgba(255,255,255,0.35); font-size: 0.82rem; margin-top: 6px; }
+
+  /* Poem lines — highlight as spoken */
+  .poem { display: flex; flex-direction: column; gap: 22px; }
+
+  .line-block {
+    border-radius: 10px;
+    padding: 14px 18px;
+    transition: background 0.4s, border 0.4s;
+    border: 1px solid transparent;
+    animation: fadeIn 0.7s both;
+    cursor: pointer;
+  }
+  .line-block:nth-child(1){animation-delay:0.7s;}
+  .line-block:nth-child(2){animation-delay:0.85s;}
+  .line-block:nth-child(3){animation-delay:1.0s;}
+  .line-block:nth-child(4){animation-delay:1.15s;}
+  .line-block:nth-child(5){animation-delay:1.3s;}
+
+  .line-block.active {
+    background: linear-gradient(135deg, rgba(255,153,51,0.12), rgba(214,59,110,0.08));
+    border: 1px solid rgba(255,153,51,0.3);
+  }
+
+  .line-num {
+    font-size: 0.7rem; color: rgba(255,153,51,0.5);
+    margin-bottom: 6px; letter-spacing: 2px;
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  .line-text {
+    font-family: 'Tiro Devanagari Hindi', serif;
+    font-size: clamp(1rem, 2.4vw, 1.15rem);
+    line-height: 1.9;
+    color: rgba(255,255,255,0.82);
+  }
+  .line-block.active .line-text { color: white; }
+
+  /* Footer */
+  .footer { text-align: center; margin-top: 30px; animation: fadeIn 0.8s 1.5s both; }
+  .footer .icons { font-size: 1.5rem; letter-spacing: 8px; margin-bottom: 8px; }
+  .footer p { color: rgba(255,255,255,0.25); font-size: 0.8rem; }
+  .footer p a { color: var(--saffron); text-decoration: none; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="saree-border"></div>
+
+<div class="main-card">
+
+  <!-- Speaker widget -->
+  <div class="speaker-widget">
+    <div class="avatar" id="avatar">🪷</div>
+    <div class="speaker-info">
+      <div class="speaker-name">Priya — भारतीय नारी की आवाज़</div>
+      <div class="speaker-desc">Typical Indian woman's voice • Hindi poem recitation</div>
+      <div class="wave-bars silent" id="waveBars">
+        <div class="wbar"></div><div class="wbar"></div><div class="wbar"></div>
+        <div class="wbar"></div><div class="wbar"></div><div class="wbar"></div>
+        <div class="wbar"></div><div class="wbar"></div><div class="wbar"></div>
+      </div>
+      <div class="controls">
+        <button class="btn btn-play" onclick="startReading()">🎙️ कविता सुनें</button>
+        <button class="btn btn-stop" onclick="stopReading()">⏹ रोकें</button>
+        <button class="btn btn-stop" onclick="pauseResume()">⏸ Pause/Resume</button>
+      </div>
+      <div class="sliders">
+        <div class="slider-group">
+          <label>Speed (गति): <span id="rateVal">0.78</span></label>
+          <input type="range" min="0.5" max="1.2" step="0.05" value="0.78" oninput="updateRate(this)">
+        </div>
+        <div class="slider-group">
+          <label>Pitch (सुर): <span id="pitchVal">1.1</span></label>
+          <input type="range" min="0.8" max="1.8" step="0.05" value="1.1" oninput="updatePitch(this)">
+        </div>
+      </div>
+      <div id="status">▶ कविता सुनने के लिए "कविता सुनें" दबाएं...</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Title -->
+  <div class="title-block">
+    <h1>नारी का <span class="accent">सम्मान</span></h1>
+    <p class="sub">Women's Day Kavita — 8 March 2026 • Click any stanza to read from there</p>
+  </div>
+
+  <!-- Poem stanzas — each as a speakable block -->
+  <div class="poem" id="poem">
+
+    <div class="line-block" onclick="readFrom(0)" data-index="0">
+      <div class="line-num">✦ STANZA 1</div>
+      <div class="line-text">
+        तू फूल है, तू आंधी भी है,<br>
+        तू नाज़ुक है, तू फौलादी भी है।<br>
+        हर तूफ़ान में खिलती है गुलाब जैसी,<br>
+        हर मुश्किल में रहती है रोशन, सूरज जैसी।
+      </div>
+    </div>
+
+    <div class="line-block" onclick="readFrom(1)" data-index="1">
+      <div class="line-num">✦ STANZA 2</div>
+      <div class="line-text">
+        घर संभाले, दुनिया भी बनाये,<br>
+        अपने सपनों को कभी न भुलाये।<br>
+        अपने ज़ख्मों को सोना बना लेती है,<br>
+        टूट के भी, हर दिल को जोड़ लेती है।
+      </div>
+    </div>
+
+    <div class="line-block" onclick="readFrom(2)" data-index="2">
+      <div class="line-num">✦ STANZA 3</div>
+      <div class="line-text">
+        माँ है, बेटी है, सखी भी है,<br>
+        हर भूमिका में सबसे अच्छी है।<br>
+        कोमल हाथों से दुनिया उठाये,<br>
+        फिर भी कहती है — "मैं कर सकती हूँ!"
+      </div>
+    </div>
+
+    <div class="line-block" onclick="readFrom(3)" data-index="3">
+      <div class="line-num">✦ STANZA 4</div>
+      <div class="line-text">
+        तुझे सलाम है, ए नारी,<br>
+        तू है इस सृष्टि की मेहंदारी।<br>
+        आज नहीं, हर रोज़ है तेरा दिन,<br>
+        तेरी हिम्मत को हम करते हैं — प्रणाम!
+      </div>
+    </div>
+
+    <div class="line-block" onclick="readFrom(4)" data-index="4">
+      <div class="line-num">✦ STANZA 5</div>
+      <div class="line-text">
+        उठ, चमक, और खुल के जी,<br>
+        अपनी कहानी खुद ही लिख।<br>
+        यह दुनिया तेरी है — तू सक्षम है,<br>
+        महिला दिवस की शुभकामनाएं — तू अनमोल है!
+      </div>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="footer">
+    <div class="icons">🌸💪✨🌹🎊</div>
+    <p>Happy International Women's Day 2026 — <span style="color:var(--saffron)">तू अनमोल है!</span></p>
+    <p style="margin-top:6px; font-size:0.7rem; color:rgba(255,255,255,0.2)">Uses your browser's built-in Text-to-Speech. Best on Chrome/Edge with Hindi voice.</p>
+  </div>
+
+</div>
+
+<script>
+const lines = [
+  "तू फूल है, तू आंधी भी है। तू नाज़ुक है, तू फौलादी भी है। हर तूफ़ान में खिलती है गुलाब जैसी। हर मुश्किल में रहती है रोशन, सूरज जैसी।",
+  "घर संभाले, दुनिया भी बनाये। अपने सपनों को कभी न भुलाये। अपने ज़ख्मों को सोना बना लेती है। टूट के भी, हर दिल को जोड़ लेती है।",
+  "माँ है, बेटी है, सखी भी है। हर भूमिका में सबसे अच्छी है। कोमल हाथों से दुनिया उठाये। फिर भी कहती है — मैं कर सकती हूँ!",
+  "तुझे सलाम है, ए नारी। तू है इस सृष्टि की मेहंदारी। आज नहीं, हर रोज़ है तेरा दिन। तेरी हिम्मत को हम करते हैं — प्रणाम!",
+  "उठ, चमक, और खुल के जी। अपनी कहानी खुद ही लिख। यह दुनिया तेरी है — तू सक्षम है। महिला दिवस की शुभकामनाएं — तू अनमोल है!"
+];
+
+const synth = window.speechSynthesis;
+let currentIdx = 0;
+let rate = 0.78;
+let pitch = 1.1;
+let isStopped = false;   // true when user explicitly stopped
+let isPaused = false;
+let voicesReady = false;
+let pendingStart = null; // index to start after voices load
+
+// ── Voice loading ────────────────────────────────────────────────────────────
+function loadVoices() {
+  return new Promise(resolve => {
+    const v = synth.getVoices();
+    if (v.length) { resolve(v); return; }
+    const id = setInterval(() => {
+      const vv = synth.getVoices();
+      if (vv.length) { clearInterval(id); resolve(vv); }
+    }, 100);
+    // Fallback after 3s
+    setTimeout(() => { clearInterval(id); resolve(synth.getVoices()); }, 3000);
+  });
+}
+
+function getBestVoice(voices) {
+  const hiF = voices.find(v => v.lang.startsWith('hi') && /female|woman/i.test(v.name));
+  if (hiF) return hiF;
+  const hi = voices.find(v => v.lang.startsWith('hi'));
+  if (hi) return hi;
+  const inEnF = voices.find(v => v.lang === 'en-IN' && /female|woman/i.test(v.name));
+  if (inEnF) return inEnF;
+  const inEn = voices.find(v => v.lang === 'en-IN');
+  if (inEn) return inEn;
+  const female = voices.find(v => /heera|zira|samantha|karen|moira|fiona|victoria|susan|linda|susan/i.test(v.name));
+  return female || voices[0];
+}
+
+// ── UI helpers ───────────────────────────────────────────────────────────────
+function setStatus(msg, active = false) {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = active ? 'active' : '';
+}
+
+function setWave(speaking) {
+  document.getElementById('waveBars').className = speaking ? 'wave-bars' : 'wave-bars silent';
+  document.getElementById('avatar').className = speaking ? 'avatar speaking' : 'avatar';
+}
+
+function highlightBlock(idx) {
+  document.querySelectorAll('.line-block').forEach((b, i) => {
+    b.classList.toggle('active', i === idx);
+  });
+  const block = document.querySelector(`.line-block[data-index="${idx}"]`);
+  if (block) block.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function clearHighlight() {
+  document.querySelectorAll('.line-block').forEach(b => b.classList.remove('active'));
+}
+
+// ── Core speak ───────────────────────────────────────────────────────────────
+async function speakStanza(idx) {
+  if (isStopped || idx >= lines.length) {
+    if (idx >= lines.length && !isStopped) {
+      setStatus('✅ कविता पूरी हुई! — Poem complete! 🌸');
+      setWave(false);
+      clearHighlight();
+    }
+    return;
+  }
+
+  currentIdx = idx;
+  highlightBlock(idx);
+  setStatus(`🎙️ पढ़ रही हैं... Stanza ${idx + 1} / ${lines.length}`, true);
+
+  const voices = await loadVoices();
+  const voice = getBestVoice(voices);
+
+  // Show which voice is being used
+  if (idx === 0 && voice) {
+    document.querySelector('.speaker-desc').textContent =
+      `🎤 ${voice.name} (${voice.lang}) • Hindi poem`;
+  }
+
+  const utt = new SpeechSynthesisUtterance(lines[idx]);
+  utt.lang = voice && voice.lang.startsWith('hi') ? 'hi-IN' : (voice ? voice.lang : 'hi-IN');
+  utt.rate = rate;
+  utt.pitch = pitch;
+  utt.volume = 1;
+  if (voice) utt.voice = voice;
+
+  utt.onstart = () => setWave(true);
+
+  utt.onend = () => {
+    // Only continue if not stopped/paused by user
+    if (!isStopped && !isPaused) {
+      speakStanza(idx + 1);
+    }
+  };
+
+  utt.onerror = (e) => {
+    if (e.error === 'interrupted' || e.error === 'canceled') return; // expected on stop
+    setStatus(`⚠️ Voice error: ${e.error}. Please use Chrome or Edge browser.`);
+    setWave(false);
+  };
+
+  synth.speak(utt);
+
+  // Chrome bug fix: speech sometimes silently stops — keep it alive
+  const keepAlive = setInterval(() => {
+    if (!synth.speaking || isStopped) { clearInterval(keepAlive); return; }
+    if (!synth.pending && !synth.speaking) {
+      clearInterval(keepAlive);
+    }
+  }, 5000);
+}
+
+// ── Controls ─────────────────────────────────────────────────────────────────
+async function startReading() {
+  isStopped = false;
+  isPaused = false;
+  synth.cancel();
+  setStatus('🔄 आवाज़ लोड हो रही है...', true);
+  // Small delay after cancel to avoid Chrome race
+  await new Promise(r => setTimeout(r, 150));
+  speakStanza(0);
+}
+
+async function readFrom(idx) {
+  isStopped = false;
+  isPaused = false;
+  synth.cancel();
+  await new Promise(r => setTimeout(r, 150));
+  speakStanza(idx);
+}
+
+function stopReading() {
+  isStopped = true;
+  isPaused = false;
+  synth.cancel();
+  setWave(false);
+  clearHighlight();
+  setStatus('⏹ रोक दिया। "कविता सुनें" दबाएं फिर से शुरू करने के लिए।');
+}
+
+function pauseResume() {
+  if (isPaused) {
+    // Resume
+    isPaused = false;
+    synth.resume();
+    setWave(true);
+    setStatus(`🎙️ जारी है... Stanza ${currentIdx + 1}`, true);
+  } else if (synth.speaking) {
+    // Pause
+    isPaused = true;
+    synth.pause();
+    setWave(false);
+    setStatus('⏸ रुकी हुई है। फिर दबाएं जारी रखने के लिए।');
+  } else {
+    setStatus('▶ पहले "कविता सुनें" दबाएं।');
+  }
+}
+
+function updateRate(el) {
+  rate = parseFloat(el.value);
+  document.getElementById('rateVal').textContent = rate.toFixed(2);
+}
+
+function updatePitch(el) {
+  pitch = parseFloat(el.value);
+  document.getElementById('pitchVal').textContent = pitch.toFixed(2);
+}
+
+// Warm up voice engine on page load
+window.addEventListener('load', () => {
+  loadVoices().then(v => {
+    const best = getBestVoice(v);
+    if (best) setStatus(`✅ आवाज़ तैयार है — ${best.name}. "कविता सुनें" दबाएं!`);
+    else setStatus('▶ "कविता सुनें" दबाएं कविता सुनने के लिए।');
+  });
+});
+</script>
+</body>
+</html>
